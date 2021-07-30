@@ -13,7 +13,7 @@ JSLinkProxyObject >> declarativeViews [
 				viewDictionary := viewProxy newCommandFactory
 					<< ((viewProxy => #getViewDeclaration) jsCallWith: { viewSelector });
 					sendAndWait.
-				((GtDeclarativeView fromDictionary: viewDictionary)
+				((GtPhlowDeclarativeView fromDictionary: viewDictionary)
 					accessor: viewProxy;
 					methodName: viewSelector;
 					yourself) ] ].
