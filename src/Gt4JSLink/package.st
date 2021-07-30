@@ -1,1 +1,1 @@
-Package { #name : #Gt4JSLink }
+Package { #name : 'Gt4JSLink' }
