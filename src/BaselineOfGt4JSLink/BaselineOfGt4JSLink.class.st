@@ -1,10 +1,10 @@
 Class {
-	#name : #BaselineOfGt4JSLink,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfGt4JSLink
+	#name : 'BaselineOfGt4JSLink',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfGt4JSLink'
 }
 
-{ #category : #baseline }
+{ #category : 'baseline' }
 BaselineOfGt4JSLink >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
@@ -12,7 +12,7 @@ BaselineOfGt4JSLink >> baseline: spec [
 			baseline: 'JavaScriptLink' with: [
 				spec repository: 'github://feenkcom/JSLink:v0.5.201/src' ];
 			baseline: 'DAPChromeDevTools' with: [
-				spec repository: 'github://feenkcom/pharo-debugadapterprotocol:v0.5.153/src' ].
+				spec repository: 'github://feenkcom/pharo-debugadapterprotocol:v0.5.154/src' ].
 		spec package: 'Gt4JSLink' with: [
 				spec requires: #('JavaScriptLink' 'DAPChromeDevTools' ). ]. ].
 
