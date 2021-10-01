@@ -126,7 +126,7 @@ JSLinkProxyObject >> gtViewsFor: aView inContext: aContext [
 	inspectorViews := resultingView originalView views.
 
 	"Add the explicitly declarative views from the inspected object"
-	inspectorViews addAll: (self viewsFor: aView).
+	inspectorViews addAll: (self remoteViewsFor: aView).
 
 	"Re-sort by priority"
 	inspectorViews := inspectorViews sorted: [ :a :b | a priority < b priority ].
@@ -156,6 +156,16 @@ JSLinkProxyObject >> isGtViewedObject [
 ]
 
 { #category : #'*Gt4JSLink' }
+JSLinkProxyObject >> remoteViewsFor: aView [
+	"Should be all views, but just get Raw and Print views for now"
+
+	^ [ self declarativeViews collect: [ :declarativeView | declarativeView viewFor: aView ] ]
+		on: LanguageLinkServerNotRunningError
+		do: [ #() ].
+
+]
+
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> viewProxyDo: aBlock [
 	"Evaluate the supplied block ensuring that the receiver is a GtViewedObject"
 
@@ -165,15 +175,5 @@ JSLinkProxyObject >> viewProxyDo: aBlock [
 		ifTrue: [ self ]
 		ifFalse: [ self getViewProxy ].
 	^ aBlock value: viewProxy.
-
-]
-
-{ #category : #'*Gt4JSLink' }
-JSLinkProxyObject >> viewsFor: aView [
-	"Should be all views, but just get Raw and Print views for now"
-
-	^ [ self declarativeViews collect: [ :declarativeView | declarativeView viewFor: aView ] ]
-		on: LanguageLinkServerNotRunningError
-		do: [ #() ].
 
 ]
