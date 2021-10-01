@@ -1,6 +1,6 @@
-Extension { #name : 'JSLinkProxyObject' }
+Extension { #name : #JSLinkProxyObject }
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> declarativeViews [
 	"Answer the views for the receiver"
 	| viewMethodNames rawViews viewDictionary |
@@ -20,7 +20,7 @@ JSLinkProxyObject >> declarativeViews [
 	^ rawViews
 ]
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> evaluateSourceSequence: aString [
 
 	^ self newCommandFactory
@@ -29,7 +29,7 @@ JSLinkProxyObject >> evaluateSourceSequence: aString [
 
 ]
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> getViewProxy [
 	"Answer a GtViewedProxy on the receiver"
 
@@ -41,7 +41,7 @@ JSLinkProxyObject >> getViewProxy [
 
 ]
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> gtErrorStatusFor: aView [
 	<gtView>
 
@@ -52,7 +52,7 @@ JSLinkProxyObject >> gtErrorStatusFor: aView [
 		text: 'Application Server not running'.
 ]
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> gtLocalViewsFor: aView inContext: aContext [
 	| title resultingView |
 	title := String streamContents: [ :stream |
@@ -65,7 +65,7 @@ JSLinkProxyObject >> gtLocalViewsFor: aView inContext: aContext [
 	^ resultingView
 ]
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> gtPlaygroundFor: aView [
 	<gtView>
 
@@ -85,7 +85,7 @@ JSLinkProxyObject >> gtPlaygroundFor: aView [
 
 ]
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> gtProxyFor: aView [
 	<gtProxy>
 
@@ -94,7 +94,7 @@ JSLinkProxyObject >> gtProxyFor: aView [
 		priority: 10000.
 ]
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> gtProxyViewsFor: aView [
 	<gtView>
 	^ aView list
@@ -105,7 +105,7 @@ JSLinkProxyObject >> gtProxyViewsFor: aView [
 		send: [ :view | view ]
 ]
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> gtSentItemFor: methodName at: selection [ 
 
 	self assert: (PharoLinkRegistry isPrimitive: methodName).
@@ -116,7 +116,7 @@ JSLinkProxyObject >> gtSentItemFor: methodName at: selection [
 					sendAndWait.
 ]
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> gtViewsFor: aView inContext: aContext [
 	"Add the declarative views from the inspectors object to the inspectors views"
 
@@ -126,7 +126,7 @@ JSLinkProxyObject >> gtViewsFor: aView inContext: aContext [
 	inspectorViews := resultingView originalView views.
 
 	"Add the explicitly declarative views from the inspected object"
-	inspectorViews addAll: (self viewsFor: aView).
+	inspectorViews addAll: (self remoteViewsFor: aView).
 
 	"Re-sort by priority"
 	inspectorViews := inspectorViews sorted: [ :a :b | a priority < b priority ].
@@ -134,7 +134,7 @@ JSLinkProxyObject >> gtViewsFor: aView inContext: aContext [
 	^resultingView
 ]
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> gtViewsInContext: aContext [
 	"This collects all views for the current object.
 	For a proxy we just want the Raw view renamed as 'Proxy'"
@@ -148,14 +148,24 @@ JSLinkProxyObject >> gtViewsInContext: aContext [
 		yourself
 ]
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> isGtViewedObject [
 	"Answer a boolean indicating whether the receiver is a GtViewedProxy"
 
 	^ javaScriptClass = #GtViewedObject
 ]
 
-{ #category : '*Gt4JSLink' }
+{ #category : #'*Gt4JSLink' }
+JSLinkProxyObject >> remoteViewsFor: aView [
+	"Should be all views, but just get Raw and Print views for now"
+
+	^ [ self declarativeViews collect: [ :declarativeView | declarativeView viewFor: aView ] ]
+		on: LanguageLinkServerNotRunningError
+		do: [ #() ].
+
+]
+
+{ #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> viewProxyDo: aBlock [
 	"Evaluate the supplied block ensuring that the receiver is a GtViewedObject"
 
@@ -165,15 +175,5 @@ JSLinkProxyObject >> viewProxyDo: aBlock [
 		ifTrue: [ self ]
 		ifFalse: [ self getViewProxy ].
 	^ aBlock value: viewProxy.
-
-]
-
-{ #category : '*Gt4JSLink' }
-JSLinkProxyObject >> viewsFor: aView [
-	"Should be all views, but just get Raw and Print views for now"
-
-	^ [ self declarativeViews collect: [ :declarativeView | declarativeView viewFor: aView ] ]
-		on: LanguageLinkServerNotRunningError
-		do: [ #() ].
 
 ]
