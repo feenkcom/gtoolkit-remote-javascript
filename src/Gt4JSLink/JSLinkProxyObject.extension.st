@@ -108,8 +108,8 @@ JSLinkProxyObject >> gtProxyViewsFor: aView [
 { #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> gtSentItemFor: methodName at: selection [ 
 
-	self assert: (PharoLinkRegistry isPrimitive: methodName).
-	self assert: (PharoLinkRegistry isPrimitive: selection).
+	self assert: methodName isPharoLinkPrimitive.
+	self assert: selection isPharoLinkPrimitive.
 
 	^ application newCommandFactory
 				<< ((self => #sentItem) jsCallWith: { methodName. selection. });
