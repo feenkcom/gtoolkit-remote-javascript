@@ -126,7 +126,8 @@ JSLinkProxyObject >> gtViewsFor: aView inContext: aContext [
 	inspectorViews := resultingView originalView views.
 
 	"Add the explicitly declarative views from the inspected object"
-	inspectorViews addAll: (self remoteViewsFor: aView).
+	inspectorViews addAll: (self 
+		remoteViewsFor: aView inContext: aContext).
 
 	"Re-sort by priority"
 	inspectorViews := inspectorViews sorted: [ :a :b | a priority < b priority ].
@@ -156,7 +157,7 @@ JSLinkProxyObject >> isGtViewedObject [
 ]
 
 { #category : #'*Gt4JSLink' }
-JSLinkProxyObject >> remoteViewsFor: aView [
+JSLinkProxyObject >> remoteViewsFor: aView inContext: aContext [
 	"Should be all views, but just get Raw and Print views for now"
 
 	^ [ self declarativeViews collect: [ :declarativeView | declarativeView viewFor: aView ] ]
