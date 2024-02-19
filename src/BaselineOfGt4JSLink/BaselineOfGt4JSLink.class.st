@@ -13,7 +13,7 @@ BaselineOfGt4JSLink >> baseline: spec [
 				spec repository: 'github://feenkcom/JSLink:v0.5.450/src' ].
 		spec
 			baseline: 'DAPChromeDevTools' with: [
-				spec repository: 'github://feenkcom/pharo-debugadapterprotocol:v0.5.309/src' ].
+				spec repository: 'github://feenkcom/pharo-debugadapterprotocol:v0.5.310/src' ].
 
 		spec package: 'Gt4JSLink' with: [
 			spec requires: #('JavaScriptLink' 'DAPChromeDevTools') ].
