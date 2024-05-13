@@ -1,6 +1,6 @@
 {
 	"repositories" : {
 		"github://feenkcom/pharo-debugadapterprotocol/src" : "v0.5.345",
-		"github://feenkcom/JSLink/src" : "v0.5.478"
+		"github://feenkcom/JSLink/src" : "v0.5.479"
 	}
 }
