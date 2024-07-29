@@ -5,7 +5,7 @@ JSLinkProxyObject >> declarativeViews [
 	"Answer the views for the receiver"
 	| viewMethodNames rawViews viewDictionary |
 
-	self viewProxyDo: [ :viewProxy | 
+	self remoteInspectorProxyDo: [ :viewProxy | 
 		viewMethodNames := viewProxy newCommandFactory
 				<< (viewProxy => #getGtViewMethodNames) jsCall;
 				sendAndWait.
@@ -30,7 +30,7 @@ JSLinkProxyObject >> evaluateSourceSequence: aString [
 ]
 
 { #category : #'*Gt4JSLink' }
-JSLinkProxyObject >> getViewProxy [
+JSLinkProxyObject >> getRemoteInspectorProxy [
 	"Answer a GtViewedProxy on the receiver"
 
 	^ self application newCommandFactory
@@ -157,24 +157,24 @@ JSLinkProxyObject >> isGtViewedObject [
 ]
 
 { #category : #'*Gt4JSLink' }
-JSLinkProxyObject >> remoteViewsFor: aView inContext: aContext [
-	"Should be all views, but just get Raw and Print views for now"
-
-	^ [ self declarativeViews collect: [ :declarativeView | declarativeView viewFor: aView ] ]
-		on: LanguageLinkServerNotRunningError
-		do: [ #() ].
-
-]
-
-{ #category : #'*Gt4JSLink' }
-JSLinkProxyObject >> viewProxyDo: aBlock [
+JSLinkProxyObject >> remoteInspectorProxyDo: aBlock [
 	"Evaluate the supplied block ensuring that the receiver is a GtViewedObject"
 
 	| viewProxy |
 
 	viewProxy := javaScriptClass = #GtViewedObject
 		ifTrue: [ self ]
-		ifFalse: [ self getViewProxy ].
+		ifFalse: [ self getRemoteInspectorProxy ].
 	^ aBlock value: viewProxy.
+
+]
+
+{ #category : #'*Gt4JSLink' }
+JSLinkProxyObject >> remoteViewsFor: aView inContext: aContext [
+	"Should be all views, but just get Raw and Print views for now"
+
+	^ [ self declarativeViews collect: [ :declarativeView | declarativeView viewFor: aView ] ]
+		on: LanguageLinkServerNotRunningError
+		do: [ #() ].
 
 ]
