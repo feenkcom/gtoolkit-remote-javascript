@@ -87,7 +87,7 @@ JSLinkProxyObject >> gtPlaygroundFor: aView [
 
 { #category : #'*Gt4JSLink' }
 JSLinkProxyObject >> gtProxyFor: aView [
-	<gtProxy>
+	<gtProxyView>
 
 	^(self gtRawFor: aView)
 		title: 'Proxy' translated;
