@@ -74,7 +74,7 @@ JSLinkProxyObject >> gtPlaygroundFor: aView [
 		priority: 10;
 		text: [ '' asRopedText glamorousCodeFont ];
 		styler: application settings parserClass gtStyler;
-		actionButtonIcon: BrGlamorousIcons playinspect  
+		actionButtonIcon: BrGlamorousVectorIcons playinspect  
 			action: [ :aButton |
 				| statements result |
 				statements := aButton phlow textViewContent asString.
