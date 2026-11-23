@@ -153,7 +153,7 @@ JSLinkProxyObject >> gtViewsInContext: aContext [
 JSLinkProxyObject >> isGtViewedObject [
 	"Answer a boolean indicating whether the receiver is a GtViewedProxy"
 
-	^ javaScriptClass = #GtViewedObject
+	^ javaScriptClass = 'GtViewedObject'
 ]
 
 { #category : #'*Gt4JSLink' }
@@ -162,7 +162,7 @@ JSLinkProxyObject >> remoteInspectorProxyDo: aBlock [
 
 	| viewProxy |
 
-	viewProxy := javaScriptClass = #GtViewedObject
+	viewProxy := javaScriptClass = 'GtViewedObject'
 		ifTrue: [ self ]
 		ifFalse: [ self getRemoteInspectorProxy ].
 	^ aBlock value: viewProxy.
